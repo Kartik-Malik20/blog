@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLOG DETAILS</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        .img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .comm_list {
+            list-style-type: none;
+            padding: 0;
+            margin: 10px;
+        }
+
+        .comm {
+            margin-top: 5px;
+            margin-bottom: 6px;
+            background-color: #e7e7e7;
+            padding: 6px;
+            border-radius: 5px;
+            border: 1px solid black; /* Added a border for better visibility */
+        }
+    </style>
+</head>
+<body>
+    {% include 'navbar.html' %}  
+
+    <div class="container mt-2">
+        <!-- <img src="{{ obj.cover_img.url }}" class="card-img-top" alt="..."> -->
+        <h1>{{ obj.blog_category }}</h1>
+        <h2 class="text-center">{{ obj.blog_name }}</h2>
+        <div class="img">
+            {{ obj.blog_description|safe }}        
+        </div>
+
+        <div class="container text-center">
+            <a href="{% url 'add_like' obj.id %}" class="btn btn-outline-primary">Like this post</a>
+        </div>
+
+        {% include 'comments.html' %}
+
+        <h5>Comments ({{ comments_list|length }})</h5>
+            <ul class="list-group">
+                {% for comment in comments_list %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="comm">
+                            <i class="bi bi-arrow-return-right"></i>
+                            {{ comment.u_comment }}
+                        </span>
+                        
+                        <div>
+                            <span class="text-muted">{{ comment.created_at|timesince }} ago</span>
+                            <a href="{% url 'edit_comment' comment.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
+                            <a href="{% url 'delete_comment' comment.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                       </div>
+                    </li>
+                {% endfor %}
+            </ul>
+
+    </div>
+
+    <div class="container text-center">
+        <span class="container text-center">
+            <h3>LIKES: {{ obj.like_count }}</h3>
+            <h3>Total Views: {{ obj.view_count }}</h3>
+        </span>
+    </div>
+
+    <!-- Start of Tawk.to Script -->
+    <script type="text/javascript">
+        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+        (function(){
+        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+        s1.async=true;
+        s1.src='https://embed.tawk.to/65b0b30e0ff6374032c41fba/1hkt3msqp';
+        s1.charset='UTF-8';
+        s1.setAttribute('crossorigin','*');
+        s0.parentNode.insertBefore(s1,s0);
+        })();
+    </script>
+    <!-- End of Tawk.to Script -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>
